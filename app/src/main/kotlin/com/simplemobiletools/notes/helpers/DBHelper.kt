@@ -89,10 +89,12 @@ class DBHelper private constructor(private val mContext: Context) : SQLiteOpenHe
 
     fun getNotes(): ArrayList<Note> {
         val notes = ArrayList<Note>()
+        //创建一个array, kotlin中的数组创建得使用arrayOf
         val cols = arrayOf(COL_ID, COL_TITLE, COL_VALUE, COL_TYPE, COL_PATH)
         var cursor: Cursor? = null
         try {
             cursor = mDb.query(TABLE_NAME, cols, null, null, null, null, "$COL_TITLE COLLATE NOCASE ASC")
+            //这里的cursor可能是为null, cursor?.
             if (cursor?.moveToFirst() == true) {
                 do {
                     try {

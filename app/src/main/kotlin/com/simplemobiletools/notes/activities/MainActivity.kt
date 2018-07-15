@@ -32,13 +32,18 @@ import com.simplemobiletools.notes.helpers.MIME_TEXT_PLAIN
 import com.simplemobiletools.notes.helpers.OPEN_NOTE_ID
 import com.simplemobiletools.notes.helpers.TYPE_NOTE
 import com.simplemobiletools.notes.models.Note
+import com.simplemobiletools.notes.utils.LogUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.nio.charset.Charset
 
+//继承类和实现接口, 继承类时要调用类的构造函数(是不是主构造函数)
 class MainActivity : SimpleActivity(), ViewPager.OnPageChangeListener {
+    val TAG = "MainActivity"
+    //定义一个可空类型 type? 来表示
     private var mAdapter: NotesPagerAdapter? = null
 
+    //lateinit 延迟初始化
     lateinit var mCurrentNote: Note
     private var mNotes = ArrayList<Note>()
 
@@ -53,6 +58,7 @@ class MainActivity : SimpleActivity(), ViewPager.OnPageChangeListener {
         setContentView(R.layout.activity_main)
         appLaunched(BuildConfig.APPLICATION_ID)
 
+        LogUtils.d(TAG, "init view pager")
         initViewPager()
 
         pager_title_strip.setTextSize(TypedValue.COMPLEX_UNIT_PX, getTextSize())
@@ -217,6 +223,7 @@ class MainActivity : SimpleActivity(), ViewPager.OnPageChangeListener {
         val itemIndex = getNoteIndexWithId(wantedNoteId)
 
         mAdapter = NotesPagerAdapter(supportFragmentManager, mNotes, this)
+        //直接使用view_pager而不需要findViewById
         view_pager.apply {
             adapter = mAdapter
             currentItem = itemIndex
@@ -524,6 +531,7 @@ class MainActivity : SimpleActivity(), ViewPager.OnPageChangeListener {
     }
 
     private fun getNoteIndexWithId(id: Int): Int {
+        //m until n --[m,n) 左闭右开
         for (i in 0 until mNotes.count()) {
             if (mNotes[i].id == id) {
                 mCurrentNote = mNotes[i]

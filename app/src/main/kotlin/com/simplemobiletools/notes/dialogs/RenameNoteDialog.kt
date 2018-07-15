@@ -10,6 +10,7 @@ import com.simplemobiletools.notes.models.Note
 import kotlinx.android.synthetic.main.dialog_new_note.view.*
 import java.io.File
 
+//这个dialog的构造函数最后要传入一个callback, 为一个lambda
 class RenameNoteDialog(val activity: SimpleActivity, val note: Note, callback: (note: Note) -> Unit) {
 
     init {
@@ -33,6 +34,7 @@ class RenameNoteDialog(val activity: SimpleActivity, val note: Note, callback: (
                                     if (path.isNotEmpty()) {
                                         if (title.isEmpty()) {
                                             activity.toast(R.string.filename_cannot_be_empty)
+                                            //标签返回
                                             return@setOnClickListener
                                         }
 
